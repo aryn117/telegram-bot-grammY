@@ -5,7 +5,7 @@ const axios = require("axios");
 
 // Create a bot using the Telegram token
 console.log(process.env.TELEGRAM_TOKEN);
-const bot = new Bot(process.env.TELEGRAM_TOKEN || "5927350968:AAHpJtavt0-g_mDl7s1k-vYUkqLYU4icFTQ");
+const bot = new Bot(process.env.TELEGRAM_TOKEN || "");
 
 const keyboard = new Keyboard()
 .text("do you nob me?❤️🥰").row()
