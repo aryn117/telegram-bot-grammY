@@ -28,6 +28,7 @@ bot.command("start", (ctx) => {
 
 bot.on("message", async (ctx) => {
   const msg = ctx.message.text.toLowerCase();
+  console.log("triggered");
 
   if (msg == "/start" || msg === undefined || msg === null || msg === "") {
     console.log("🛑🛑msg value is invalid, please check what went wrong");
