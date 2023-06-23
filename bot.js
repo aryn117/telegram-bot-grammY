@@ -143,19 +143,20 @@ async function getJokeFromAPI() {
 
 //? --------------------------------------------------------------------- //
 
-// Start the server
-// if (process.env.NODE_ENV === "production") {
-//   // Use Webhooks for the production server
-//   const app = express();
-//   app.use(express.json());
-//   app.use(webhookCallback(bot, "express"));
+//Start the server
+if (process.env.NODE_ENV === "production") {
+  // Use Webhooks for the production server
+  const app = express();
+  app.use(express.json());
+  app.use(webhookCallback(bot, "express"));
 
-//   const PORT = process.env.PORT || 3000;
-//   app.listen(PORT, async () => {
-//     console.log(`Bot listening on port ${PORT}`);
-//     await bot.api.setWebhook("https://gorgeous-teddy-mite.cyclic.app");
-//   });
-// } else {
-  //Use Long Polling for development
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, async () => {
+    console.log(`Bot listening on port ${PORT}`);
+    await bot.api.setWebhook("https://gorgeous-teddy-mite.cyclic.app");
+  });
+} else {
+  // Use Long Polling for development
   bot.start();
   bot.catch((err) => console.log("🚀 ~ file: index.js:185 ~ err", err));
+}
