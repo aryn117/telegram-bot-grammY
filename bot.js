@@ -6,6 +6,7 @@ require("dotenv").config();
 
 const bot = new Bot(process.env.TELEGRAM_TOKEN || "");
 
+//* Keyboard Layout --------------------------------------- //
 const keyboard = new Keyboard()
   .text("do you nob me?❤️🥰")
   .row()
@@ -17,6 +18,7 @@ const keyboard = new Keyboard()
   .row()
   .persistent();
 
+//* Initial Message --------------------------------------- //
 bot.command("start", (ctx) => {
   ctx.reply(
     "Hello Pathuman, \nI am a bot to give you company when bigPathu🍆🍆 is Busy \n I can sing you a song, \n tell you a joke🤣🤣,\n send you something cute🥺😳 and \n even romance you 😍😘",
@@ -26,6 +28,7 @@ bot.command("start", (ctx) => {
   );
 });
 
+//* Chat Logic -------------------------------------------- //
 bot.on("message", async (ctx) => {
   const msg = ctx.message.text.toLowerCase();
   console.log("triggered");
@@ -35,7 +38,7 @@ bot.on("message", async (ctx) => {
     return;
   }
 
-  //* send texts ///////////////////////////////////////////////////////////
+  //* send a quote ----------------------------------------- //
   else if (
     msg === "do u nob me?" ||
     msg === "do you nob me?" ||
@@ -45,6 +48,20 @@ bot.on("message", async (ctx) => {
       data.quotesReplyList[
         randomNumberGenerator(0, data.quotesReplyList.length - 1)
       ].toString()
+    );
+  }
+
+  //* replying to love u ----------------------------------------- //
+  else if (
+    msg === "i love u" ||
+    msg === "i luv u" ||
+    msg === "i luv you" ||
+    msg === "i love you" ||
+    msg.indexOf("love") !== -1 ||
+    msg.indexOf("luv") !== -1 
+  ) {
+    ctx.reply(
+     "I love u too beeeech💖💖💖💖💖💖💖"
     );
   }
 
@@ -65,7 +82,8 @@ bot.on("message", async (ctx) => {
 
   */
 
-  //* send gifs ///////////////////////////////////////////////////////////
+  //* send cute gifs ----------------------------------------------------- //
+
   else if (msg === "send me something cute" || msg.indexOf("cute") !== -1) {
     try {
       const selectedGIF =
@@ -77,7 +95,8 @@ bot.on("message", async (ctx) => {
       console.error(error);
     }
   }
-  //* sending joke ////////////////////////////////////////////////////
+
+  //* send joke --------------------------------------------------------- //
   else if (msg === "tell me a joke" || msg.indexOf("joke") !== -1) {
     try {
       const joke = await getJokeFromAPI();
@@ -88,7 +107,7 @@ bot.on("message", async (ctx) => {
     }
   }
 
-  //* send star_plus gifs ////////////////////////////////////////////////////
+  //* send star_plus romantic gif ------------------------------------------ //
   else if (msg === "romance me beech" || msg.indexOf("romance") !== -1) {
     const selectedGIF = randomNumberGenerator(0, data.romanceGIFs.length - 1);
     console.log(selectedGIF);
@@ -96,7 +115,7 @@ bot.on("message", async (ctx) => {
     ctx.replyWithAnimation(data.romanceGIFs[selectedGIF]);
   }
 
-  //* exception catch ////////////////////////////////////////////////////
+  //* exception catch ------------------------------------------------------ //
   else {
     ctx.reply("Hehehe🥰🥰🥰🥰🥰");
   }
@@ -125,12 +144,12 @@ bot.on("message", async (ctx) => {
 //* -------------------------------------------------------------------- //
 //* Helper Functions --------------------------------------------------- //
 
-// rng
+//* rng
 function randomNumberGenerator(min = 0, max = 999) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
-// get joke from icanhazdadjoke api and return it in string format
+//* get joke from icanhazdadjoke api and return it in string format
 
 async function getJokeFromAPI() {
   const url = "https://icanhazdadjoke.com/slack";
@@ -141,11 +160,11 @@ async function getJokeFromAPI() {
   return attachments[0].text;
 }
 
-//? --------------------------------------------------------------------- //
 
-//Start the server
+//* Start the server ------------------------------------------------------ //
 if (process.env.NODE_ENV === "production") {
-  // Use Webhooks for the production server
+
+  //? Use Webhooks for the production server (only runs on trigger) -------------------------------- //
   const app = express();
   app.use(express.json());
   app.use(webhookCallback(bot, "express"));
@@ -156,7 +175,10 @@ if (process.env.NODE_ENV === "production") {
     await bot.api.setWebhook("https://gorgeous-teddy-mite.cyclic.app");
   });
 } else {
-  // Use Long Polling for development
+
+  //? Use Long Polling for Development Environment (Continuously Running) ----------------------------- //
   bot.start();
   bot.catch((err) => console.log("🚀 ~ file: index.js:185 ~ err", err));
 }
+
+//* -------------------------------------------------------------------- //
