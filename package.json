@@ -1,8 +1,10 @@
 {
   "name": "telegram-bot-cyclic",
   "author": "aryn117",
+  "version": "1.0.0",
+  "main": "bot.js",
   "scripts": {
-    "start": "npm start bot.js",
+    "start": "node bot.js",
     "dev": "nodemon bot.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
