@@ -2,6 +2,8 @@ const { Bot, Keyboard, webhookCallback } = require("grammy");
 const express = require("express");
 const data = require("./data.js");
 const axios = require("axios");
+require('dotenv').config();
+
 
 // Create a bot using the Telegram token
 console.log(process.env.TELEGRAM_TOKEN);
@@ -160,13 +162,17 @@ async function getJokeFromAPI () {
 //? --------------------------------------------------------------------- //
 
 // Start the server
+// if (process.env.NODE_ENV === "production") {
+//   // Use Webhooks for the production server
+//   const app = express();
+//   app.use(express.json());
+//   app.use(webhookCallback(bot, "express"));
 
-  // Use Webhooks for the production server
-  const app = express();
-  app.use(express.json());
-  app.use(webhookCallback(bot, "express"));
-
-  const PORT = process.env.PORT || 3000;
-  app.listen(PORT, () => {
-    console.log(`Bot listening on port ${PORT}`);
-  });
+//   const PORT = process.env.PORT || 3000;
+//   app.listen(PORT, () => {
+//     console.log(`Bot listening on port ${PORT}`);
+//   });
+// } else {
+  // Use Long Polling for development
+  bot.start();
+//}
