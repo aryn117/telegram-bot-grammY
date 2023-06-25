@@ -36,9 +36,13 @@ bot.on("message", async (ctx) => {
   //* EXCEPTION: if the message is a sticker ------------------------------- //
   if (msg.sticker !== undefined) {
     msg = "Hello";
+  } else {
+
+    msg = msg.text.toLowerCase();
+
   }
   
-  msg = msg.text.toLowerCase();
+  console.log("🚀 ~ file: bot.js:42 ~ bot.on ~ msg:", msg)
  
   if (msg == "/start" || msg === undefined || msg === null || msg === "") {
     console.log("🛑🛑msg value is invalid, please check what went wrong");
