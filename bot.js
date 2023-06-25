@@ -1,8 +1,9 @@
+require("dotenv").config();
+
 const { Bot, Keyboard, webhookCallback } = require("grammy");
 const express = require("express");
 const data = require("./data.js");
 const axios = require("axios");
-require("dotenv").config();
 
 const bot = new Bot(process.env.TELEGRAM_TOKEN || "");
 
@@ -30,9 +31,15 @@ bot.command("start", (ctx) => {
 
 //* Chat Logic -------------------------------------------- //
 bot.on("message", async (ctx) => {
-  const msg = ctx.message.text.toLowerCase();
-  console.log("triggered");
+  let msg = ctx.message;
 
+  //* EXCEPTION: if the message is a sticker ------------------------------- //
+  if (msg.sticker !== undefined) {
+    msg = "Hello";
+  }
+  
+  msg = msg.text.toLowerCase();
+ 
   if (msg == "/start" || msg === undefined || msg === null || msg === "") {
     console.log("🛑🛑msg value is invalid, please check what went wrong");
     return;
@@ -58,11 +65,9 @@ bot.on("message", async (ctx) => {
     msg === "i luv you" ||
     msg === "i love you" ||
     msg.indexOf("love") !== -1 ||
-    msg.indexOf("luv") !== -1 
+    msg.indexOf("luv") !== -1
   ) {
-    ctx.reply(
-     "I love u too beeeech💖💖💖💖💖💖💖"
-    );
+    ctx.reply("I love u too beeeech💖💖💖💖💖💖💖");
   }
 
   /*
@@ -83,7 +88,6 @@ bot.on("message", async (ctx) => {
   */
 
   //* send cute gifs ----------------------------------------------------- //
-
   else if (msg === "send me something cute" || msg.indexOf("cute") !== -1) {
     try {
       const selectedGIF =
@@ -117,7 +121,7 @@ bot.on("message", async (ctx) => {
 
   //* exception catch ------------------------------------------------------ //
   else {
-    ctx.reply("Hehehe🥰🥰🥰🥰🥰");
+    ctx.reply("Hehehe🥰🥰🥰🥰🥰 lob u");
   }
 });
 
@@ -160,10 +164,8 @@ async function getJokeFromAPI() {
   return attachments[0].text;
 }
 
-
 //* Start the server ------------------------------------------------------ //
 if (process.env.NODE_ENV === "production") {
-
   //? Use Webhooks for the production server (only runs on trigger) -------------------------------- //
   const app = express();
   app.use(express.json());
@@ -175,7 +177,6 @@ if (process.env.NODE_ENV === "production") {
     await bot.api.setWebhook("https://gorgeous-teddy-mite.cyclic.app");
   });
 } else {
-
   //? Use Long Polling for Development Environment (Continuously Running) ----------------------------- //
   bot.start();
   bot.catch((err) => console.log("🚀 ~ file: index.js:185 ~ err", err));
